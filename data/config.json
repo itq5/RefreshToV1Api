@@ -4,8 +4,8 @@
     "process_workers": 2,
     "process_threads": 2,
     "proxy": "",
-    "upstream_base_url": "https://demo.xyhelper.cn",
-    "upstream_api_prefix": "",
+    "upstream_base_url": "https://chat.oaifree.com",
+    "upstream_api_prefix": ["dad04481-fa3f-494e-b90c-b822128073e5"],
     "backend_container_url": "",
     "backend_container_api_prefix": "",
     "key_for_gpts_info": "",
@@ -27,7 +27,7 @@
     "refresh_ToAccess": {
         "stream_sleep_time": 0,
         "enableOai":"false",
-        "xyhelper_refreshToAccess_Url": "https://demo.xyhelper.cn/applelogin"
+        "oaifree_refreshToAccess_Url": "https://token.oaifree.com/api/auth/refresh"
     },
     "redis": {
         "host": "redis",
