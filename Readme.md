@@ -326,7 +326,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 
 ```
 请求头加上
-Authorization：Bearer refresh_token
+Authorization：Bearer refresh_token 或 access_token
 ```
 
 ## 示例
