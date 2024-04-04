@@ -318,6 +318,16 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
     }
 }
 ```
+## 获取ChatGPT-Account-ID接口
+
+接口URI：`/getAccountID`
+
+请求方式：`POST`
+
+```
+请求头加上
+Authorization：Bearer refresh_token
+```
 
 ## 示例
 
@@ -336,6 +346,7 @@ services:
       - CUSTOM_MODELS=+gpt-4-s,+gpt-4-mobile,+<gpts.json 中的模型名>
 
 ```
+
 
 ## 功能演示
 <details>
