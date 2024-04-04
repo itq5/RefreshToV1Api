@@ -1,4 +1,7 @@
-## 项目简介
+# [RefreshToV1Api](https://github.com/Yanyutin753/RefreshToV1Api)
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/yangclivia/pandora-to-api/0.7.8)![Docker Pulls](https://img.shields.io/docker/pulls/yangclivia/pandora-to-api)[![GitHub Repo stars](https://img.shields.io/github/stars/Yanyutin753/RefreshToV1Api?style=social)](https://github.com/Yanyutin753/refresh-gpt-chat/stargazers)
+
+## [项目简介](https://github.com/Yanyutin753/RefreshToV1Api)
 
 > [!IMPORTANT]
 >
