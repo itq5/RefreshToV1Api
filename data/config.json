@@ -1,8 +1,6 @@
 {
     "log_level": "INFO",
     "need_log_to_file": "true",
-    "process_workers": 2,
-    "process_threads": 2,
     "proxy": "",
     "upstream_base_url": "https://chat.oaifree.com",
     "upstream_api_prefix": ["dad04481-fa3f-494e-b90c-b822128073e5"],

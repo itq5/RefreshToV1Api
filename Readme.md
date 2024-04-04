@@ -100,10 +100,6 @@
 
 - `need_log_to_file`: 用于设置是否需要将日志输出到文件，可选值为：`true`、`false`，默认为 `true`，日志文件路径为：`./log/access.log`，默认每天会自动分割日志文件。
 
-- `process_workers`: 用于设置进程数，如果不需要设置，可以保持不变，如果需要设置，可以设置为需要设置的值，默认为 `2`。
-
-- `process_threads`: 用于设置线程数，如果不需要设置，可以保持不变，如果需要设置，可以设置为需要设置的值，默认为 `2`。
-
 - `upstream_base_url`: oaiFree 的接口地址，如：`https://chat.oaifree.com`，注意：不要以 `/` 结尾。
 
 - `upstream_api_prefix`: 默认为["dad04481-fa3f-494e-b90c-b822128073e5"]，之后可多填
