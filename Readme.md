@@ -19,7 +19,9 @@
 
 4. 支持 gpt-4-mobile 、gpt-4-s 、基本所有的GPTS
 
-* **oaiFree 的 免费 backend-api 接口，无需打码**
+* **oaiFree 的 backend-api 接口，无需打码**
+
+* **oaiFree 的 backend-api 接口，只支持Chatgpt Plus账号**
 
 * 之后可能跟[Linux.do](https://linux.do/latest)论坛挂钩，请提前做好准备
 
