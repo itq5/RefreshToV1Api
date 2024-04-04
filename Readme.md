@@ -2,27 +2,23 @@
 
 > [!IMPORTANT]
 >
-> Respect `xyhelper` ,Respect `ninja` , Respect `Wizerd`！
+> Respect `oaiFree` , Respect `Wizerd`！
 
-感谢xyhelper、ninja和Wizerd大佬们的付出，敬礼！！！
+感谢oaiFree、Ink-Osier大佬们的付出，敬礼！！！
 
 本项目支持：
 
-1. 将 xyhelper  `proxy` 模式下的 `backend-api免费接口` 转为 `/v1/chat/completions` 接口，支持流式和非流式响应。
+1. 将 oaiFree  `proxy` 模式下的 `backend-api` 转为 `/v1/chat/completions` 接口，支持流式和非流式响应。
 
-2. 将 xyhelper  `proxy` 模式下的 `backend-api免费接口` 转为 `/v1/images/generations` 接口
+2. 将 oaiFree  `proxy` 模式下的 `backend-api` 转为 `/v1/images/generations` 接口
 
 3. 支持直接把refresh_token作为请求key，方便接入one_api
 
 4. 支持 gpt-4-mobile 、gpt-4-s 、基本所有的GPTS
 
-* **xyhelper 的 免费 backend-api 接口，无需打码**
+* **oaiFree 的 免费 backend-api 接口，无需打码**
 
-* **xyhelper接口每分钟最多请求30次，介意请绕行**
-    * 我是开发者,我想自行修改功能->前往源码库 https://github.com/xyhelper/chatgpt-mirror-server
-    * 我没服务器,也没有官网账号,只想使用->前往官网购买我们运营的会员服务 https://www.xyhelper.com.cn
-    * 我想做商业用途,我想自己运营->老板里面请 https://www.xyhelper.com.cn/access
-    * 我有服务器,我想自己部署->请继续阅读本文档(有条件的话给个star吧)
+* 之后可能跟[Linux.do](https://linux.do/latest)论坛挂钩，请提前做好准备
 
 如果本项目对你有帮助的话，请点个小星星吧~
 
@@ -42,7 +38,7 @@
 
 - [x] 支持 gpt-3.5-turbo
 
-- [x] 支持 gpts
+- [x] 暂不 支持 gpts
 
 - [x] 支持 流式输出
 
@@ -67,13 +63,13 @@
 ## 注意
 
 > [!CAUTION]
-> 1. 本项目的运行需要 xyhelper 的免费接口
+> 1. 本项目的运行需要 oaiFree 的免费接口
 >
-> 2. 本项目实际为将来自 `/v1/chat/completions` 的请求转发到xyhelper免费接口的 `/backend-api/conversation` 接口，因此本项目并不支持高并发操作，请不要接入如 `沉浸式翻译` 等高并发项目。
+> 2. 本项目实际为将来自 `/v1/chat/completions` 的请求转发到oaiFree免费接口的 `/backend-api/conversation` 接口，因此本项目并不支持高并发操作，请不要接入如 `沉浸式翻译` 等高并发项目。
 >
 > 3. 本项目支持使用apple平台的refresh_token作为请求key. 
 >
-> 4. 本项目并不能绕过 OpenAI 和 xyhelper 官方的限制，只提供便利，不提供绕过。
+> 4. 本项目并不能绕过 OpenAI 和 oaiFree 官方的限制，只提供便利，不提供绕过。
 >
 > 5. 提问的艺术：当出现项目不能正常运行时，请携带 `DEBUG` 级别的日志在 `Issue` 或者社区群内提问，否则将开启算命模式~
 
@@ -85,7 +81,7 @@
 
 2. gpt-4-mobile：支持代码解释器、bing联网、dalle绘图的 GPT-4，对应的是官方的手机版 GPT-4，截止至2023年12月15日，本模型使用量不计入 GPT-4 用量（即不受每 3 小时 40 次的限制）
 
-3. 几乎所有的 GPTS（配置方式见下文）
+3. 由于oaiFree未提供GPTS接口，暂不支持几乎所有的 GPTS（配置方式见下文）
 
 4. gpt-3.5-turbo
 
@@ -103,15 +99,15 @@
 
 - `process_threads`: 用于设置线程数，如果不需要设置，可以保持不变，如果需要设置，可以设置为需要设置的值，默认为 `2`。
 
-- `upstream_base_url`: xyhelper 的免费接口地址，如：`https://demo.xyhelper.cn`，注意：不要以 `/` 结尾。
+- `upstream_base_url`: oaiFree 的接口地址，如：`https://chat.oaifree.com`，注意：不要以 `/` 结尾。
 
-- `upstream_api_prefix`: 默认为""
+- `upstream_api_prefix`: 默认为["dad04481-fa3f-494e-b90c-b822128073e5"]，之后可多填
 
 - `backend_container_url`: 用于dalle模型生成图片的时候展示所用，需要设置为使用如 [ChatGPT-Next-Web](https://github.com/ChatGPTNextWebTeam/ChatGPT-Next-Web) 的用户可以访问到的本项目地址，如：`http://1.2.3.4:50011`，同原环境变量中的 `UPLOAD_BASE_URL`
 
 - `backend_container_api_prefix`: 用于设置本项目 `/v1/xxx` 接口的前缀，如果留空则与官方api调用接口一致。设置示例：`666 `
 
-- `key_for_gpts_info`: 填入refresh_token（每天自动转成access_token 推荐）或者access_token(不推荐), 仅获取 GPTS 信息的 access_token，需要该 access_token 能够访问所有配置的 GPTS。后续发送消息仍需要在请求头携带请求所用的 access_token，如果未配置该项，请将 `gpts.json` 文件修改为：
+- `key_for_gpts_info（选填）`: 填入refresh_token（每天自动转成access_token 推荐）或者access_token(不推荐), 仅获取 GPTS 信息的 access_token，需要该 access_token 能够访问所有配置的 GPTS。后续发送消息仍需要在请求头携带请求所用的 access_token，如果未配置该项，请将 `gpts.json` 文件修改为：
 
 ```json
 {}
@@ -151,8 +147,8 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
   
     - `enableOai`:用于设置是否使用官网通过refresh_token刷新access_token，仅在 `enableOai` 为 `true` 时生效。
       
-    - `xyhelper_refreshToAccess_Url`:用于设置使用xyhelper来进行使用refresh_token刷新access_token,enableOai为false的时候必填
-        - 默认为"https://demo.xyhelper.cn/applelogin"
+    - `oaiFree_refreshToAccess_Url`:用于设置使用oaiFree来进行使用refresh_token刷新access_token,enableOai为false的时候必填
+        - 默认为"https://token.oaifree.com/api/auth/refresh"
 
 - `redis`
 
@@ -330,7 +326,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 version: '3'
 services:
   chatgpt-next-web:
-    image: yidadaa/chatgpt-next-web
+    image: yangclivia/chatgpt-next-web-langchain
     ports:
       - "50013:3000"
     environment:
@@ -388,4 +384,4 @@ services:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Yanyutin753/xyhelperV1Api_refresh&type=Date)](https://star-history.com/#Yanyutin753/xyhelperV1Api_refresh&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Yanyutin753/oaiFreeV1Api_refresh&type=Date)](https://star-history.com/#Yanyutin753/oaiFreeV1Api_refresh&Date)
