@@ -614,7 +614,7 @@ def get_file_metadata(file_content, mime_type, api_key, proxy_api_prefix):
     sha256_hash = hashlib.sha256(file_content).hexdigest()
     logger.debug(f"sha256_hash: {sha256_hash}")
     # 首先尝试从Redis中获取数据
-    cached_data = file_redis_client.get(sha256_hash)
+    cached_data = redis_client.get(sha256_hash)
     if cached_data is not None:
         # 如果在Redis中找到了数据，解码后直接返回
         logger.info(f"从Redis中获取到文件缓存数据")
@@ -653,7 +653,7 @@ def get_file_metadata(file_content, mime_type, api_key, proxy_api_prefix):
         new_file_data['height'] = height
 
     # 将新的文件数据存入Redis
-    file_redis_client.set(sha256_hash, json.dumps(new_file_data))
+    redis_client.set(sha256_hash, json.dumps(new_file_data))
 
     return new_file_data
 
