@@ -389,4 +389,4 @@ services:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Yanyutin753/oaiFreeV1Api_refresh&type=Date)](https://star-history.com/#Yanyutin753/oaiFreeV1Api_refresh&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Yanyutin753/RefreshToV1Api&type=Date)](https://star-history.com/#Yanyutin753/oaiFreeV1Api_refresh&Date)
