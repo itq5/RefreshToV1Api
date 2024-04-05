@@ -90,11 +90,14 @@
 
 4. gpt-3.5-turbo
 
-## Docker-Compose 部署
+## 部署说明
+<details>
+
+### Docker-Compose 部署
 
 仓库内已包含相关文件和目录，拉到本地后修改 docker-compose.yml 文件里的环境变量后运行`docker-compose up -d`即可。
 
-## config.json 变量说明：
+### config.json 变量说明：
 
 - `log_level`: 用于设置日志等级，可选值为：`DEBUG`、`INFO`、`WARNING`、`ERROR`，默认为 `DEBUG`
 
@@ -161,7 +164,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 
     - `db`: Redis的数据库，默认：0，如有特殊需求，你可以将此值设置为其他数据库
 
-## GPTS配置说明
+### GPTS配置说明
 
 如果需要使用 GPTS，需要修改 `gpts.json` 文件，其中每个对象的key即为调用对应 GPTS 的时候使用的模型名称，而 `id` 则为对应的模型id，该 `id` 对应每个 GPTS 的链接的后缀。配置多个GPTS的时候用逗号隔开。
 
@@ -182,7 +185,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 
 注意：使用该配置的时候需要保证正确填写 `docker-compose.yml` 的环境变量 `KEY_FOR_GPTS_INFO`，同时该变量设置的 `key` 允许访问所有配置的 GPTS。
 
-## 绘图接口使用说明
+### 绘图接口使用说明
 
 接口URI：`/v1/images/generations`
 
@@ -219,7 +222,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 }
 ```
 
-## 文件识别接口使用说明
+### 文件识别接口使用说明
 
 调用方式同官方 `gpt-4-vision-preview` API 
 
@@ -318,7 +321,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
     }
 }
 ```
-## 获取ChatGPT-Account-ID接口
+### 获取ChatGPT-Account-ID接口
 
 接口URI：`/getAccountID`
 
@@ -329,7 +332,7 @@ PS. 注意，arkose_urls中的地址需要支持PandoraNext的Arkose Token获取
 Authorization：Bearer refresh_token 或 access_token
 ```
 
-## 示例
+### 示例
 
 以ChatGPT-Next-Web项目的docker-compose部署为例，这里提供一个简单的部署配置文件示例：
 
@@ -346,6 +349,7 @@ services:
       - CUSTOM_MODELS=+gpt-4-s,+gpt-4-mobile,+<gpts.json 中的模型名>
 
 ```
+</details>
 
 
 ## 功能演示
