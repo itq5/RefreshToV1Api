@@ -338,7 +338,7 @@ scheduler.start()
 
 VERSION = '0.7.9.2'
 # VERSION = 'test'
-UPDATE_INFO = '支持最新的gpt-4-o模型'
+UPDATE_INFO = '支持最新的gpt-4-o模型,且支持上传文件'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -724,7 +724,7 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
         message_id = str(uuid.uuid4())
         content = message.get("content")
 
-        if isinstance(content, list) and ori_model_name not in ['gpt-3.5-turbo', 'gpt-4-o']:
+        if isinstance(content, list) and ori_model_name not in ['gpt-3.5-turbo']:
             logger.debug(f"gpt-vision 调用")
             new_parts = []
             attachments = []
