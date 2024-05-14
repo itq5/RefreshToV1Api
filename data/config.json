@@ -10,7 +10,7 @@
     "gpt_4_s_new_name": "gpt-4-s",
     "gpt_4_mobile_new_name": "gpt-4-mobile,dall-e-3",
     "gpt_3_5_new_name": "gpt-3.5-turbo",
-    "gpt_4_o_new_name": "gpt-4-o",
+    "gpt_4_o_new_name": "gpt-4-o,gpt-4o",
     "need_delete_conversation_after_response": "true",
     "use_oaiusercontent_url": "false",
     "custom_arkose_url": "false",
