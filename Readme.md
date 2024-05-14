@@ -17,7 +17,7 @@
 
 3. 支持直接把refresh_token作为请求key，方便接入one_api
 
-4. 支持 gpt-4-mobile 、gpt-4-s 、基本所有的GPTS
+4. 支持 gpt-4o 、gpt-4-s 、基本所有的GPTS
 
 * **oaiFree 的 backend-api 接口，无需打码**
 
@@ -39,11 +39,11 @@
 
 - [x] 支持 gpt-4-s
 
-- [x] 支持 gpt-4-mobile
+- [x] 支持 gpt-4o
 
 - [x] 支持 gpt-3.5-turbo
 
-- [x] 暂不 支持 gpts
+- [x] 支持 gpts
 
 - [x] 支持 流式输出
 
