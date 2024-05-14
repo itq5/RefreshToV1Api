@@ -51,6 +51,7 @@ API_PREFIX = CONFIG.get('backend_container_api_prefix', '')
 GPT_4_S_New_Names = CONFIG.get('gpt_4_s_new_name', 'gpt-4-s').split(',')
 GPT_4_MOBILE_NEW_NAMES = CONFIG.get('gpt_4_mobile_new_name', 'gpt-4-mobile').split(',')
 GPT_3_5_NEW_NAMES = CONFIG.get('gpt_3_5_new_name', 'gpt-3.5-turbo').split(',')
+GPT_4_O_NEW_NAMES = CONFIG.get('gpt_4_o_new_name', 'gpt-4-o').split(',')
 
 BOT_MODE = CONFIG.get('bot_mode', {})
 BOT_MODE_ENABLED = BOT_MODE.get('enabled', 'false').lower() == 'true'
@@ -335,9 +336,9 @@ scheduler.start()
 # PANDORA_UPLOAD_URL = 'files.pandoranext.com'
 
 
-VERSION = '0.7.9.1'
+VERSION = '0.7.9.2'
 # VERSION = 'test'
-UPDATE_INFO = '适配调用team对话,提供查询ChatGPT-Account-ID的/getAccountID接口'
+UPDATE_INFO = '支持最新的gpt-4-o模型'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -448,7 +449,11 @@ with app.app_context():
             "name": name.strip(),
             "ori_name": "gpt-3.5-turbo"
         })
-
+    for name in GPT_4_O_NEW_NAMES:
+        gpts_configurations.append({
+            "name": name.strip(),
+            "ori_name": "gpt-4-o"
+        })
     logger.info(f"GPTS 配置信息")
 
     # 加载配置并添加到全局列表
@@ -719,7 +724,7 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
         message_id = str(uuid.uuid4())
         content = message.get("content")
 
-        if isinstance(content, list) and ori_model_name != 'gpt-3.5-turbo':
+        if isinstance(content, list) and ori_model_name not in ['gpt-3.5-turbo', 'gpt-4-o']:
             logger.debug(f"gpt-vision 调用")
             new_parts = []
             attachments = []
@@ -879,6 +884,28 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
                 "force_paragen": False,
                 "force_rate_limit": False
             }
+        elif ori_model_name == 'gpt-4-o':
+            payload = {
+                # 构建 payload
+                "action": "next",
+                "messages": formatted_messages,
+                "parent_message_id": str(uuid.uuid4()),
+                "model": "auto",
+                "timezone_offset_min": -480,
+                "suggestions": [
+                    "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
+                    "I want to cheer up my friend who's having a rough day. Can you suggest a couple short and sweet text messages to go with a kitten gif?",
+                    "Come up with 5 concepts for a retro-style arcade game.",
+                    "I have a photoshoot tomorrow. Can you recommend me some colors and outfit options that will look good on camera?"
+                ],
+                "history_and_training_disabled": False,
+                "arkose_token": None,
+                "conversation_mode": {
+                    "kind": "primary_assistant"
+                },
+                "force_paragen": False,
+                "force_rate_limit": False
+            }
         elif 'gpt-4-gizmo-' in model:
             payload = generate_gpts_payload(model, formatted_messages)
             if not payload:
@@ -913,7 +940,7 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
         if NEED_DELETE_CONVERSATION_AFTER_RESPONSE:
             logger.debug(f"是否保留会话: {NEED_DELETE_CONVERSATION_AFTER_RESPONSE == False}")
             payload['history_and_training_disabled'] = True
-        if ori_model_name != 'gpt-3.5-turbo':
+        if ori_model_name not in ['gpt-3.5-turbo', 'gpt-4-o']:
             if CUSTOM_ARKOSE:
                 token = get_token()
                 payload["arkose_token"] = token
