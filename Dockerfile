@@ -14,7 +14,7 @@ RUN chmod +x /app/main.py
 
 # # 设置 pip 源为清华大学镜像
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-
+EXPOSE 33333
 # 安装任何所需的依赖项
 RUN pip install --no-cache-dir flask flask_apscheduler requests Pillow flask-cors tiktoken fake_useragent redis websocket-client pysocks requests[socks] websocket-client[optional]
 
