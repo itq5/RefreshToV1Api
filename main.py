@@ -3,6 +3,7 @@ import base64
 import hashlib
 import json
 import logging
+import mimetypes
 import os
 import uuid
 from datetime import datetime
@@ -136,7 +137,6 @@ def getPROXY_API_PREFIX(lock):
                 return None
             else:
                 return "/" + (PROXY_API_PREFIX[index % len(PROXY_API_PREFIX)])
-                index += 1
 
 
 def generate_unique_id(prefix):
@@ -324,9 +324,9 @@ scheduler.start()
 # PANDORA_UPLOAD_URL = 'files.pandoranext.com'
 
 
-VERSION = '0.7.9.3'
+VERSION = '0.7.9.4'
 # VERSION = 'test'
-UPDATE_INFO = '支持最新的gpt-4-o模型,并重定向gpt-4-mobile到gpt-4-s'
+UPDATE_INFO = '修复空回复，支持更多文件类型'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -492,7 +492,6 @@ def get_token():
             logger.error(f"请求异常: {e}")
 
     raise Exception("获取 arkose token 失败")
-    return None
 
 
 import os
@@ -679,7 +678,7 @@ def get_file_extension(mime_type):
         "text/x-script.python": ".py",
         # 其他 MIME 类型和扩展名...
     }
-    return extension_mapping.get(mime_type, "")
+    return extension_mapping.get(mime_type, mimetypes.guess_extension(mime_type))
 
 
 my_files_types = [
@@ -1175,6 +1174,7 @@ def data_fetcher(upstream_response, data_queue, stop_event, last_data_time, api_
     file_output_accumulating = False
     execution_output_image_url_buffer = ""
     execution_output_image_id_buffer = ""
+    message = None
     try:
         for chunk in upstream_response.iter_content(chunk_size=1024):
             if stop_event.is_set():
@@ -1773,6 +1773,7 @@ def chat_completions():
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({"error": "Authorization header is missing or invalid"}), 401
+    api_key = None
     try:
         api_key = auth_header.split(' ')[1].split(',')[0].strip()
         account_id = auth_header.split(' ')[1].split(',')[1].strip()
@@ -1796,6 +1797,9 @@ def chat_completions():
 
     upstream_response = send_text_prompt_and_get_response(messages, api_key, account_id, stream, model,
                                                           proxy_api_prefix)
+
+    if upstream_response.status_code != 200:
+        return jsonify({"error": f"{upstream_response.text}"}), upstream_response.status_code
 
     # 在非流式响应的情况下，我们需要一个变量来累积所有的 new_text
     all_new_text = ""
@@ -1930,6 +1934,7 @@ def images_generations():
         return jsonify({"error": "PROXY_API_PREFIX is not accessible"}), 401
     data = request.json
     logger.debug(f"data: {data}")
+    api_key = None
     # messages = data.get('messages')
     model = data.get('model')
     accessible_model_list = get_accessible_model_list()
@@ -1982,6 +1987,9 @@ def images_generations():
 
     upstream_response = send_text_prompt_and_get_response(messages, api_key, account_id, False, model, proxy_api_prefix)
 
+    if upstream_response.status_code != 200:
+        return jsonify({"error": f"{upstream_response.text}"}), upstream_response.status_code
+
     # 在非流式响应的情况下，我们需要一个变量来累积所有的 new_text
     all_new_text = ""
 
@@ -2000,6 +2008,7 @@ def images_generations():
         conversation_id = ''
         citation_buffer = ""
         citation_accumulating = False
+        message = None
         for chunk in upstream_response.iter_content(chunk_size=1024):
             if chunk:
                 buffer += chunk.decode('utf-8')
@@ -2022,7 +2031,7 @@ def images_generations():
                         # print(f"data_json: {data_json}")
                         message = data_json.get("message", {})
 
-                        if message == None:
+                        if message is None:
                             logger.error(f"message 为空: data_json: {data_json}")
 
                         message_status = message.get("status")
@@ -2414,18 +2423,15 @@ def get_file(filename):
 @app.route(f'/{API_PREFIX}/getAccountID' if API_PREFIX else '/getAccountID', methods=['POST'])
 @cross_origin()  # 使用装饰器来允许跨域请求
 def getAccountID():
-    logger.info(f"New Img Request")
+    logger.info(f"New Account Request")
     proxy_api_prefix = getPROXY_API_PREFIX(lock)
-    if proxy_api_prefix == None:
+    if proxy_api_prefix is None:
         return jsonify({"error": "PROXY_API_PREFIX is not accessible"}), 401
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
         return jsonify({"error": "Authorization header is missing or invalid"}), 401
-    try:
-        api_key = auth_header.split(' ')[1].split(',')[0].strip()
-        account_id = auth_header.split(' ')[1].split(',')[1].strip()
-    except IndexError:
-        account_id = None
+    api_key = auth_header.split(' ')[1].split(',')[0].strip()
+
     if not api_key.startswith("eyJhb"):
         refresh_token = api_key
         if api_key in refresh_dict:
