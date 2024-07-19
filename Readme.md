@@ -39,7 +39,7 @@
 
 - [x] 支持 gpt-4-s
 
-- [x] 支持 gpt-4o
+- [x] 支持 gpt-4o 和 gpt-4o-mini
 
 - [x] 支持 gpt-3.5-turbo
 

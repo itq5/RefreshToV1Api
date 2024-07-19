@@ -41,7 +41,8 @@ API_PREFIX = CONFIG.get('backend_container_api_prefix', '')
 GPT_4_S_New_Names = CONFIG.get('gpt_4_s_new_name', 'gpt-4-s').split(',')
 GPT_4_MOBILE_NEW_NAMES = CONFIG.get('gpt_4_mobile_new_name', 'gpt-4-mobile').split(',')
 GPT_3_5_NEW_NAMES = CONFIG.get('gpt_3_5_new_name', 'gpt-3.5-turbo').split(',')
-GPT_4_O_NEW_NAMES = CONFIG.get('gpt_4_o_new_name', 'gpt-4-o').split(',')
+GPT_4_O_NEW_NAMES = CONFIG.get('gpt_4_o_new_name', 'gpt-4o').split(',')
+GPT_4_O_MINI_NEW_NAMES = CONFIG.get('gpt_4_o_mini_new_name', 'gpt-4o-mini').split(',')
 
 BOT_MODE = CONFIG.get('bot_mode', {})
 BOT_MODE_ENABLED = BOT_MODE.get('enabled', 'false').lower() == 'true'
@@ -324,9 +325,9 @@ scheduler.start()
 # PANDORA_UPLOAD_URL = 'files.pandoranext.com'
 
 
-VERSION = '0.7.9.4'
+VERSION = '0.7.9.5'
 # VERSION = 'test'
-UPDATE_INFO = '修复空回复，支持更多文件类型'
+UPDATE_INFO = '✨ 支持最新的gpt-4o-mini 模型'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -441,6 +442,11 @@ with app.app_context():
         gpts_configurations.append({
             "name": name.strip(),
             "ori_name": "gpt-4-o"
+        })
+    for name in GPT_4_O_MINI_NEW_NAMES:
+        gpts_configurations.append({
+            "name": name.strip(),
+            "ori_name": "gpt-4o-mini"
         })
     logger.info(f"GPTS 配置信息")
 
@@ -851,13 +857,16 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
                 "action": "next",
                 "messages": formatted_messages,
                 "parent_message_id": str(uuid.uuid4()),
-                "model": "text-davinci-002-render-sha",
+                "model": "gpt-4o-mini",
                 "timezone_offset_min": -480,
                 "suggestions": [
-                    "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
-                    "I want to cheer up my friend who's having a rough day. Can you suggest a couple short and sweet text messages to go with a kitten gif?",
+                    "What are 5 creative things I could do with my kids' art? I don't want to throw them away, "
+                    "but it's also so much clutter.",
+                    "I want to cheer up my friend who's having a rough day. Can you suggest a couple short and sweet "
+                    "text messages to go with a kitten gif?",
                     "Come up with 5 concepts for a retro-style arcade game.",
-                    "I have a photoshoot tomorrow. Can you recommend me some colors and outfit options that will look good on camera?"
+                    "I have a photoshoot tomorrow. Can you recommend me some colors and outfit options that will look "
+                    "good on camera?"
                 ],
                 "history_and_training_disabled": False,
                 "arkose_token": None,
@@ -865,6 +874,7 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
                     "kind": "primary_assistant"
                 },
                 "force_paragen": False,
+                "force_paragen_model_slug": "",
                 "force_rate_limit": False
             }
         elif ori_model_name == 'gpt-4-o':
@@ -887,6 +897,32 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
                     "kind": "primary_assistant"
                 },
                 "force_paragen": False,
+                "force_rate_limit": False
+            }
+        elif ori_model_name == 'gpt-4o-mini':
+            payload = {
+                # 构建 payload
+                "action": "next",
+                "messages": formatted_messages,
+                "parent_message_id": str(uuid.uuid4()),
+                "model": "gpt-4o-mini",
+                "timezone_offset_min": -480,
+                "suggestions": [
+                    "What are 5 creative things I could do with my kids' art? I don't want to throw them away, "
+                    "but it's also so much clutter.",
+                    "I want to cheer up my friend who's having a rough day. Can you suggest a couple short and sweet "
+                    "text messages to go with a kitten gif?",
+                    "Come up with 5 concepts for a retro-style arcade game.",
+                    "I have a photoshoot tomorrow. Can you recommend me some colors and outfit options that will look "
+                    "good on camera?"
+                ],
+                "history_and_training_disabled": False,
+                "arkose_token": None,
+                "conversation_mode": {
+                    "kind": "primary_assistant"
+                },
+                "force_paragen": False,
+                "force_paragen_model_slug": "",
                 "force_rate_limit": False
             }
         elif 'gpt-4-gizmo-' in model:
@@ -923,7 +959,7 @@ def send_text_prompt_and_get_response(messages, api_key, account_id, stream, mod
         if NEED_DELETE_CONVERSATION_AFTER_RESPONSE:
             logger.debug(f"是否保留会话: {NEED_DELETE_CONVERSATION_AFTER_RESPONSE == False}")
             payload['history_and_training_disabled'] = True
-        if ori_model_name not in ['gpt-3.5-turbo', 'gpt-4-o']:
+        if ori_model_name not in ['gpt-3.5-turbo']:
             if CUSTOM_ARKOSE:
                 token = get_token()
                 payload["arkose_token"] = token
