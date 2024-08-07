@@ -1977,12 +1977,14 @@ def images_generations():
     if model not in accessible_model_list and not 'gpt-4-gizmo-' in model:
         return jsonify({"error": "model is not accessible"}), 401
 
-    prompt = data.get('prompt', '')
-
-    prompt = DALLE_PROMPT_PREFIX + prompt
-
     # 获取请求中的response_format参数，默认为"url"
     response_format = data.get('response_format', 'url')
+    # 获取请求中的size参数，默认为"1024x1024"
+    response_size = data.get('size', '1024x1024')
+
+    prompt = data.get('prompt', '')
+
+    prompt = DALLE_PROMPT_PREFIX + '\nprompt:' + prompt + '\nsize:' + response_size
 
     # stream = data.get('stream', False)
 
