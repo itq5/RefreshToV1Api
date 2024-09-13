@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend-to-api:
-    image: yangclivia/pandora-to-api:0.7.9
+    image: yangclivia/pandora-to-api:0.8.0
     restart: always
     ports:
       - "50011:33333"
