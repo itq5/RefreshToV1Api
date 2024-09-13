@@ -12,10 +12,13 @@
     "gpt_3_5_new_name": "gpt-3.5-turbo",
     "gpt_4_o_new_name": "gpt-4-o,gpt-4o",
     "gpt_4_o_mini_new_name": "gpt-4o-mini",
+    "o1_preview_new_name": "o1_preview",
+    "o1_mini_new_name": "o1_mini",
     "need_delete_conversation_after_response": "true",
     "use_oaiusercontent_url": "false",
     "custom_arkose_url": "false",
     "arkose_urls": "",
+    "upload_success_text": "`🤖 文件上传成功，搜索将不再提供额外信息！`\n",
     "dalle_prompt_prefix": "请严格根据我的以下要求完成绘图任务，如果我没有发出指定的绘画指令，则绘制出我发出的文字对应的图片：",
     "bot_mode": {
         "enabled": "false",
