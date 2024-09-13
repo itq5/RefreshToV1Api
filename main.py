@@ -1870,14 +1870,19 @@ import time
 def chat_completions():
     logger.info(f"New Request")
     proxy_api_prefix = getPROXY_API_PREFIX(lock)
+
     if proxy_api_prefix == None:
         return jsonify({"error": "PROXY_API_PREFIX is not accessible"}), 401
     data = request.json
     messages = data.get('messages')
-    model = data.get('model')
+    model = data.get('model', "gpt-3.5-turbo")
+    ori_model_name = model
     accessible_model_list = get_accessible_model_list()
     if model not in accessible_model_list and not 'gpt-4-gizmo-' in model:
         return jsonify({"error": "model is not accessible"}), 401
+    model_config = find_model_config(model)
+    if model_config:
+        ori_model_name = model_config.get('ori_name', model)
     if "o1-" in ori_model_name:
         # 使用列表推导式过滤系统角色
         messages = [message for message in messages if message["role"] in ["user", "assistant"]]
@@ -2049,12 +2054,17 @@ def images_generations():
     data = request.json
     logger.debug(f"data: {data}")
     api_key = None
-    # messages = data.get('messages')
-    model = data.get('model')
+    model = data.get('model', "gpt-3.5-turbo")
+    ori_model_name = model
     accessible_model_list = get_accessible_model_list()
     if model not in accessible_model_list and not 'gpt-4-gizmo-' in model:
         return jsonify({"error": "model is not accessible"}), 401
-
+    model_config = find_model_config(model)
+    if model_config:
+        ori_model_name = model_config.get('ori_name', model)
+    if "o1-" in ori_model_name:
+        # 使用列表推导式过滤系统角色
+        messages = [message for message in messages if message["role"] in ["user", "assistant"]]
     # 获取请求中的response_format参数，默认为"url"
     response_format = data.get('response_format', 'url')
     # 获取请求中的size参数，默认为"1024x1024"
