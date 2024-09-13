@@ -1301,10 +1301,10 @@ def data_fetcher(upstream_response, data_queue, stop_event, last_data_time, api_
                     end_index = buffer.index('\n\n') + 2
                     complete_data, buffer = buffer[:end_index], buffer[end_index:]
                     try:
-                        data_content = complete_data.replace('data', '').strip()
+                        data_content = complete_data.replace('data: ', '').strip()
                         if not data_content:
                             continue
-                        data_json = json.loads(complete_data.replace('data: ', ''))
+                        data_json = json.loads(data_content)
                         # print(f"data_json: {data_json}")
                         message = data_json.get("message", {})
 
