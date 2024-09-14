@@ -1444,9 +1444,10 @@ def data_fetcher(upstream_response, data_queue, stop_event, last_data_time, api_
                                 # 只获取新的 parts
                                 parts = content.get("parts", [])
                                 full_text = ''.join(parts)
-                                new_text = full_text[len(last_full_text):]
-                                if full_text != '':
-                                    last_full_text = full_text  # 更新完整文本以备下次比较
+                                 if full_text == "![":
+                                    last_full_text = "!"
+                                 new_text = full_text[len(last_full_text):]
+                                last_full_text = full_text
                                 if "\u3010" in new_text and not citation_accumulating:
                                     citation_accumulating = True
                                     citation_buffer = citation_buffer + new_text
