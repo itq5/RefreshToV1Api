@@ -327,9 +327,9 @@ scheduler.start()
 # PANDORA_UPLOAD_URL = 'files.pandoranext.com'
 
 
-VERSION = '0.8.0'
+VERSION = '0.8.1'
 # VERSION = 'test'
-UPDATE_INFO = '✨ 支持o1-preview和o1-mini模型'
+UPDATE_INFO = '👀 支持输出o1思考过程'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -1564,13 +1564,13 @@ def data_fetcher(upstream_response, data_queue, stop_event, last_data_time, api_
                                 last_full_code_result = full_code_result
 
                             # 其余Action执行输出特殊处理
-                            if role == "tool" and name != "python" and name != "dalle.text2im" and last_content_type != "execution_output" and content_type != None:
-                                new_text = ""
-                                if last_content_type == "code":
-                                    if BOT_MODE_ENABLED and BOT_MODE_ENABLED_CODE_BLOCK_OUTPUT == False:
-                                        new_text = ""
-                                    else:
-                                        new_text = "\n```\n" + new_text
+                            # if role == "tool" and name != "python" and name != "dalle.text2im" and last_content_type != "execution_output" and content_type != None:
+                            #     new_text = ""
+                            #     if last_content_type == "code":
+                            #         if BOT_MODE_ENABLED and BOT_MODE_ENABLED_CODE_BLOCK_OUTPUT == False:
+                            #             new_text = ""
+                            #         else:
+                            #             new_text = "\n```\n" + new_text
 
                         # 检查 new_text 中是否包含 <<ImageDisplayed>>
                         if "<<ImageDisplayed>>" in last_full_code_result:
