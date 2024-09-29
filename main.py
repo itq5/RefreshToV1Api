@@ -1301,7 +1301,7 @@ def data_fetcher(upstream_response, data_queue, stop_event, last_data_time, api_
                     end_index = buffer.index('\n\n') + 2
                     complete_data, buffer = buffer[:end_index], buffer[end_index:]
                     try:
-                        data_content = re.sub(r'^data:\s*', '', complete_data).strip()
+                        data_content = complete_data[6:].strip()
                         if not data_content:
                             continue
                         data_json = json.loads(data_content)
@@ -2154,7 +2154,7 @@ def images_generations():
                     complete_data, buffer = buffer[:end_index], buffer[end_index:]
                     # 解析 data 块
                     try:
-                        data_json = json.loads(re.sub(r'^data:\s*', '', complete_data).strip())
+                        data_json = json.loads(complete_data[6:].strip())
                         # print(f"data_json: {data_json}")
                         message = data_json.get("message", {})
 
