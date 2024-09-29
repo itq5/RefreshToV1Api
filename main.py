@@ -327,9 +327,9 @@ scheduler.start()
 # PANDORA_UPLOAD_URL = 'files.pandoranext.com'
 
 
-VERSION = '0.8.1'
+VERSION = '0.8.2'
 # VERSION = 'test'
-UPDATE_INFO = '👀 支持输出o1思考过程'
+UPDATE_INFO = '🥳 修复data:结尾代码输出出现异常问题'
 # UPDATE_INFO = '【仅供临时测试使用】 '
 
 with app.app_context():
@@ -2154,7 +2154,7 @@ def images_generations():
                     complete_data, buffer = buffer[:end_index], buffer[end_index:]
                     # 解析 data 块
                     try:
-                        data_json = json.loads(complete_data.replace('data: ', ''))
+                        data_json = json.loads(re.sub(r'^data:\s*', '', complete_data).strip())
                         # print(f"data_json: {data_json}")
                         message = data_json.get("message", {})
 
